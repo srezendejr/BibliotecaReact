@@ -9,7 +9,7 @@ function GeneroLista({ generos, onSelecionar, atualizarGeneros, API_URL }) {
 
         if (!window.confirm("Excluir gênero?")) return;
 
-        fetch(API_URL + "/Genero/" + genero.id, {
+        fetch(API_URL + "/v1/Genero/ExcluirGenero/" + genero.id, {
             method: "DELETE"
         })
             .then(() => atualizarGeneros());

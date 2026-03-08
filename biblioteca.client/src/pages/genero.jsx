@@ -10,11 +10,11 @@ function Generos() {
     const [livros, setLivros] = useState([]);
     const [busca, setBusca] = useState("");
 
-    const API_URL = "https://localhost:7048/api";
+    const API_URL = "https://localhost:7208/api";
 
     const buscarGeneros = () => {
 
-        fetch(API_URL + "/Genero")
+        fetch(API_URL + "/v1/Genero/ListaGeneros")
             .then(res => res.json())
             .then(data => setGeneros(data));
     };

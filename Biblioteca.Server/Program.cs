@@ -72,6 +72,9 @@ builder.Services.AddApiVersioning(options =>
 });
 //builder.Services.AddScoped<LivroService>();
 //builder.Services.AddScoped<GeneroService>();
+builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
+builder.Services.AddScoped<IGeneroService, GeneroService>();
+
 builder.Services.AddScoped<IAutorRepository, AutorRepository>();
 builder.Services.AddScoped<IAutorService, AutorService>(); 
 builder.Services.AddScoped<Context>();

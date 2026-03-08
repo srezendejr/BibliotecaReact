@@ -69,7 +69,7 @@ namespace Biblioteca.Repository.Repository
 
         public async Task<IEnumerable<vm.Genero>> ListaGenero()
         {
-            return await(from a in _context.Autor.AsNoTracking()
+            return await(from a in _context.Genero.AsNoTracking()
                          select new vm.Genero
                          {
                              Id = a.Id,

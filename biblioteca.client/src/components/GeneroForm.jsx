@@ -14,8 +14,8 @@ function GeneroForm({ API_URL, atualizarGeneros }) {
         const metodo = modoEdicao ? "PUT" : "POST";
 
         const url = modoEdicao
-            ? API_URL + "/Genero/" + genero.id
-            : API_URL + "/Genero";
+            ? API_URL + "/v1/Genero/BuscaGeneroPorId/" + genero.id
+            : API_URL + "/v1/Genero/SalvarGenero";
 
         fetch(url, {
             method: metodo,
