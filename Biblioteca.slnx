@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="biblioteca.client/biblioteca.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="Biblioteca.Data/Biblioteca.Data.csproj" />
+  <Project Path="Biblioteca.Repository/Biblioteca.Repository.csproj" />
+  <Project Path="Biblioteca.Server/Biblioteca.Server.csproj" />
+  <Project Path="Biblioteca.Service/Biblioteca.Service.csproj" />
+  <Project Path="Biblioteca.Test/Biblioteca.Test.csproj" Id="8b11314d-3261-4f55-9847-ad4d5fc9e7a2" />
+  <Project Path="Biblioteca.ViewModel/Biblioteca.ViewModel.csproj" Id="89159001-57d6-4368-a8b2-e0d8dd4b5223" />
+</Solution>
