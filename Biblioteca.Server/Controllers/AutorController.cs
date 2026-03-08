@@ -40,5 +40,12 @@ namespace Biblioteca.Server.Controllers
             await _autorService.Incluir(autorViewModel);
             return Ok();
         }
+
+        [HttpDelete("ExcluirAutor/{id}")]
+        public async Task<IActionResult>ExcluirAutor(int id)
+        {
+            await _autorService.Excluir(id);
+            return Ok();
+        }
     }
 }

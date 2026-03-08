@@ -9,7 +9,7 @@ function AutorLista({ autores, onSelecionar, atualizarAutores, API_URL }) {
 
         if (!window.confirm("Excluir autor?")) return;
 
-        fetch(API_URL + "/v1/Autor/BuscaPorAutorPorId" + autor.id, {
+        fetch(API_URL + "/v1/Autor/ExcluirAutor/" + autor.id, {
             method: "DELETE"
         })
             .then(() => atualizarAutores());
