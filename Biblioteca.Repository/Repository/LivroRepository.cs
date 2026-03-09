@@ -1,7 +1,8 @@
 ﻿using Biblioteca.Data;
 using Biblioteca.Data.Model;
 using Biblioteca.Repository.Interface;
-using vm=Biblioteca.ViewModel;
+using Microsoft.EntityFrameworkCore;
+using vm = Biblioteca.ViewModel;
 
 namespace Biblioteca.Repository.Repository
 {
@@ -29,6 +30,23 @@ namespace Biblioteca.Repository.Repository
                 return false;
         }
 
+        public async Task<vm.Livro> BuscaLivroPorId(int id)
+        {
+            var resultado = await (from l in _context.Livro.AsNoTracking()
+                                   join a in _context.Autor.AsNoTracking() on l.IdAutor equals a.Id
+                                   join g in _context.Genero.AsNoTracking() on l.IdGenero equals g.Id
+                                   select new vm.Livro
+                                   {
+                                       Id = l.Id,
+                                       IdAutor = l.IdAutor,
+                                       IdGenero = l.IdGenero,
+                                       Nome = l.Nome,
+                                       NomeGenero = g.Nome,
+                                       NomeAutor = a.Nome
+                                   }).FirstOrDefaultAsync();
+            return resultado ?? new vm.Livro();
+        }
+
         public async Task<bool> Excluir(int id)
         {
             var livroExcluido = await _context.Livro.FindAsync(id);
@@ -44,7 +62,8 @@ namespace Biblioteca.Repository.Repository
 
         public async Task<bool> Incluir(vm.Livro livro)
         {
-            var livroNovo = new Livro { 
+            var livroNovo = new Livro
+            {
                 IdGenero = livro.IdGenero,
                 IdAutor = livro.IdAutor,
                 Nome = livro.Nome,
@@ -52,6 +71,23 @@ namespace Biblioteca.Repository.Repository
             _context.Livro.Add(livroNovo);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<vm.Livro>> ListarLivros()
+        {
+            return await (from l in _context.Livro.AsNoTracking()
+                          join a in _context.Autor.AsNoTracking() on l.IdAutor equals a.Id
+                          join g in _context.Genero.AsNoTracking() on l.IdGenero equals g.Id
+                          select new vm.Livro
+                          {
+                              Id = l.Id,
+                              IdAutor = l.IdAutor,
+                              IdGenero = l.IdGenero,
+                              Nome = l.Nome,
+                              NomeGenero = g.Nome,
+                              NomeAutor = a.Nome
+                          }
+                          ).ToListAsync();
         }
     }
 }

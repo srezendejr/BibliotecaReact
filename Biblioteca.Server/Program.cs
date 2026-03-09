@@ -1,5 +1,4 @@
 using Asp.Versioning;
-using Asp.Versioning.ApiExplorer;
 using Biblioteca.Data;
 using Biblioteca.Repository.Interface;
 using Biblioteca.Repository.Repository;
@@ -70,8 +69,9 @@ builder.Services.AddApiVersioning(options =>
     options.DefaultApiVersion = new ApiVersion(1, 0);
     options.ReportApiVersions = true;
 });
-//builder.Services.AddScoped<LivroService>();
-//builder.Services.AddScoped<GeneroService>();
+builder.Services.AddScoped<ILivroService, LivroService>();
+builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+
 builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
 builder.Services.AddScoped<IGeneroService, GeneroService>();
 

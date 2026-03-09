@@ -29,8 +29,8 @@ namespace Biblioteca.Server.Controllers
         [HttpGet("BuscaGeneroPorId/{id}")]
         public async Task<IActionResult> BuscaGeneroPorId(int id)
         {
-            var autor = _generoService.BuscaGeneroPorId(id);
-            return Ok(autor);
+            var genero = await _generoService.BuscaGeneroPorId(id);
+            return Ok(genero);
         }
 
         [HttpPost("SalvarGenero")]

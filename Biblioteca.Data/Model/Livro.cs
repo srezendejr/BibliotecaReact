@@ -9,8 +9,6 @@ namespace Biblioteca.Data.Model
     public class Livro
     {
         public Livro() { 
-            Genero = new Genero();
-            Autor = new Autor(); 
             Nome =string.Empty;
         }
         public int Id { get; set;  }

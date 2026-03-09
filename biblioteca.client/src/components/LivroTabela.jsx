@@ -6,7 +6,7 @@ function LivroTabela({ livros, autores, generos, atualizarLivros, API_URL }) {
 
         if (!window.confirm("Excluir livro?")) return;
 
-        fetch(API_URL + "/Livro/" + livro.id, {
+        fetch(API_URL + "/v1/Livro/ExcluirLivro/" + livro.id, {
             method: "DELETE"
         })
             .then(() => atualizarLivros());
@@ -50,11 +50,11 @@ function LivroTabela({ livros, autores, generos, atualizarLivros, API_URL }) {
 
                             <td>{l.id}</td>
 
-                            <td>{l.titulo}</td>
+                            <td>{l.nome}</td>
 
-                            <td>{nomeAutor(l.autorId)}</td>
+                            <td>{nomeAutor(l.idAutor)}</td>
 
-                            <td>{nomeGenero(l.generoId)}</td>
+                            <td>{nomeGenero(l.idGenero)}</td>
 
                             <td>
                                 <button

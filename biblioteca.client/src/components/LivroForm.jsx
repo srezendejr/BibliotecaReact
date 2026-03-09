@@ -4,16 +4,16 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
 
     const [livro, setLivro] = useState({
         id: 0,
-        titulo: "",
-        autorId: "",
-        generoId: ""
+        nome: "",
+        idAutor: "",
+        idGenero: ""
     });
 
     const [modoEdicao, setModoEdicao] = useState(false);
 
     const salvar = () => {
 
-        if (!livro.titulo || !livro.autorId || !livro.generoId) {
+        if (!livro.nome || !livro.idAutor || !livro.idGenero) {
             alert("Preencha todos os campos");
             return;
         }
@@ -21,8 +21,8 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
         const metodo = modoEdicao ? "PUT" : "POST";
 
         const url = modoEdicao
-            ? API_URL + "/Livro/" + livro.id
-            : API_URL + "/Livro";
+            ? API_URL + "/v1/Livro/BuscaLivroPorId/" + livro.id
+            : API_URL + "/v1/Livro/SalvarLivro";
 
         fetch(url, {
             method: metodo,
@@ -39,9 +39,9 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
 
         setLivro({
             id: 0,
-            titulo: "",
-            autorId: "",
-            generoId: ""
+            nome: "",
+            idAutor: "",
+            idGenero: ""
         });
 
         setModoEdicao(false);
@@ -63,9 +63,9 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
 
             Título <br />
             <input
-                value={livro.titulo}
+                value={livro.nome}
                 onChange={(e) =>
-                    setLivro({ ...livro, titulo: e.target.value })
+                    setLivro({ ...livro, nome: e.target.value })
                 }
             />
 
@@ -73,9 +73,9 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
 
             Autor <br />
             <select
-                value={livro.autorId}
+                value={livro.idAutor}
                 onChange={(e) =>
-                    setLivro({ ...livro, autorId: e.target.value })
+                    setLivro({ ...livro, idAutor: e.target.value })
                 }
             >
                 <option value="">Selecione</option>
@@ -92,9 +92,9 @@ function LivroForm({ API_URL, atualizarLivros, autores, generos }) {
 
             Gênero <br />
             <select
-                value={livro.generoId}
+                value={livro.idGenero}
                 onChange={(e) =>
-                    setLivro({ ...livro, generoId: e.target.value })
+                    setLivro({ ...livro, idGenero: e.target.value })
                 }
             >
                 <option value="">Selecione</option>

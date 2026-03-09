@@ -4,7 +4,7 @@ using Biblioteca.ViewModel;
 
 namespace Biblioteca.Service.Service
 {
-    public class LivroService : ILivroInterface
+    public class LivroService : ILivroService
     {
         private ILivroRepository livroRepository;
         public LivroService(ILivroRepository livroRepository)
@@ -44,6 +44,16 @@ namespace Biblioteca.Service.Service
             if (id <= 0)
                 throw new Exception("Informe o código do livro");
             return await livroRepository.Excluir(id);
+        }
+
+        public async Task<IEnumerable<Livro>> ListaLivros()
+        {
+            return await livroRepository.ListarLivros();
+        }
+
+        public async Task<Livro> BuscaLivroPorId(int id)
+        {
+            return await livroRepository.BuscaLivroPorId(id);
         }
     }
 }

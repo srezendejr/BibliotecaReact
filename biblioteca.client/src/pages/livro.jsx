@@ -8,22 +8,22 @@ function Livros() {
     const [autores, setAutores] = useState([]);
     const [generos, setGeneros] = useState([]);
 
-    const API_URL = "https://localhost:7048/api";
+    const API_URL = "https://localhost:7208/api";
 
     const buscarLivros = () => {
-        fetch(API_URL + "/Livro")
+        fetch(API_URL + "/v1/Livro/ListaLivros")
             .then(res => res.json())
             .then(data => setLivros(data));
     };
 
     const buscarAutores = () => {
-        fetch(API_URL + "/Autor")
+        fetch(API_URL + "/v1/Autor/ListaAutores")
             .then(res => res.json())
             .then(data => setAutores(data));
     };
 
     const buscarGeneros = () => {
-        fetch(API_URL + "/Genero")
+        fetch(API_URL + "/v1/Genero/ListaGeneros")
             .then(res => res.json())
             .then(data => setGeneros(data));
     };
