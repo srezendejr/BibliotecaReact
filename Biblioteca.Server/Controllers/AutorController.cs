@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Biblioteca.Service.Interface;
+using Biblioteca.Service.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Biblioteca.Server.Controllers
@@ -10,11 +11,15 @@ namespace Biblioteca.Server.Controllers
     public class AutorController : ControllerBase
     {
         private readonly IAutorService _autorService;
+        private readonly ILivroService _livroService;
         private readonly ILogger<AutorController> _logger;
-        public AutorController(IAutorService autorService, ILogger<AutorController> logger)
+        public AutorController(IAutorService autorService, 
+            ILogger<AutorController> logger,
+            ILivroService livroService)
         {
             _autorService = autorService;
             _logger = logger;
+            _livroService = livroService;
         }
         [HttpGet("ListaAutores")]
         public async Task<IActionResult> ListaAutores()
@@ -31,21 +36,49 @@ namespace Biblioteca.Server.Controllers
         }
 
         [HttpPost("SalvarAutor")]
-        public async Task<IActionResult>SalvarAutor(DTO.AutorDTO model)
+        public async Task<IActionResult> SalvarAutor(DTO.AutorDTO model)
         {
-            var autorViewModel = new ViewModel.Autor
+            try
             {
-                Nome = model.Nome
-            };
-            await _autorService.Incluir(autorViewModel);
-            return Ok();
+                var autorViewModel = new ViewModel.Autor
+                {
+                    Nome = model.Nome
+                };
+                await _autorService.Incluir(autorViewModel);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("ExcluirAutor/{id}")]
-        public async Task<IActionResult>ExcluirAutor(int id)
+        public async Task<IActionResult> ExcluirAutor(int id)
         {
-            await _autorService.Excluir(id);
-            return Ok();
+            try
+            {
+                await _autorService.Excluir(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/livrosPorAutor")]
+        public async Task<IActionResult> BuscarLivrosPorAautor(int id)
+        {
+            try
+            {
+                var livros = await _livroService.LivrosPorAutor(id);
+                return Ok(livros);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

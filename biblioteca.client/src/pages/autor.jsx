@@ -23,7 +23,7 @@ function Autores() {
 
         setAutorSelecionado(autor);
 
-        fetch(API_URL + "/Autor/" + autor.id + "/livros")
+        fetch(API_URL + "/v1/Autor/" + autor.id + "/livrosPorAutor")
             .then(res => res.json())
             .then(data => setLivros(data));
     };

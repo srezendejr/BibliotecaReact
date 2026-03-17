@@ -60,6 +60,11 @@ namespace Biblioteca.Repository.Repository
                 return false;
         }
 
+        public async Task<bool> Existe(int id)
+        {
+            return await _context.Livro.AnyAsync(a => a.Id == id);
+        }
+
         public async Task<bool> Incluir(vm.Livro livro)
         {
             var livroNovo = new Livro
@@ -88,6 +93,36 @@ namespace Biblioteca.Repository.Repository
                               NomeAutor = a.Nome
                           }
                           ).ToListAsync();
+        }
+
+        public async Task<IEnumerable<vm.Livro>> LivrosPorAutor(int idAutor)
+        {
+            return await (from l in _context.Livro
+                          join a in _context.Autor on l.IdAutor equals a.Id
+                          where l.IdAutor == idAutor
+                          select new vm.Livro
+                          {
+                              Id = l.Id,
+                              Nome = l.Nome,
+                              IdAutor = l.IdAutor,
+                              NomeAutor = a.Nome
+                          }
+                         ).ToListAsync();
+        }
+
+        public async Task<IEnumerable<vm.Livro>> LivrosPorGenero(int idGenero)
+        {
+            return await(from l in _context.Livro
+                         join a in _context.Genero on l.IdGenero equals a.Id
+                         where l.IdGenero == idGenero
+                         select new vm.Livro
+                         {
+                             Id = l.Id,
+                             Nome = l.Nome,
+                             IdGenero = l.IdGenero,
+                             NomeGenero = a.Nome
+                         }
+                        ).ToListAsync();
         }
     }
 }

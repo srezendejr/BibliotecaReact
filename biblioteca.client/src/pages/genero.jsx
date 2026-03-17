@@ -19,13 +19,20 @@ function Generos() {
             .then(data => setGeneros(data));
     };
 
-    const buscarLivros = (genero) => {
-
+    const buscarLivros = async (genero) => {
         setGeneroSelecionado(genero);
+        try {
+            const response = await fetch(API_URL + '/v1/Genero/' + genero.id + "/livrosPorGenero");
+            if (!response.ok) {
+                const mensagem = await response.text();
+                throw new Error(mensagem);
+            }
+            const data = await response.json();
+            setLivros(data);
 
-        fetch(API_URL + "/Genero/" + genero.id + "/livros")
-            .then(res => res.json())
-            .then(data => setLivros(data));
+        } catch (erro) {
+            alert(erro.message);
+        }
     };
 
     useEffect(() => {

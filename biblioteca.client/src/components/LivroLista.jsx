@@ -36,7 +36,7 @@ function LivroLista({ entidade, livros, tipo }) {
 
                             <tr key={l.id}>
                                 <td>{l.id}</td>
-                                <td>{l.titulo}</td>
+                                <td>{l.nome}</td>
                             </tr>
 
                         ))}

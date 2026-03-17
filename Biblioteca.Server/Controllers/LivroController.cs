@@ -36,21 +36,35 @@ namespace Biblioteca.Server.Controllers
         [HttpPost("SalvarLivro")]
         public async Task<IActionResult> SalvarLivro(DTO.LivroDTO livro)
         {
-            Livro livroNOvo = new Livro
+            try
             {
-                Id = livro.Id,
-                IdAutor = livro.IdAutor,
-                IdGenero = livro.IdGenero,
-                Nome = livro.Nome,
-            };
-            await _livroService.Incluir(livroNOvo);
-            return Ok();
+                Livro livroNOvo = new Livro
+                {
+                    Id = livro.Id,
+                    IdAutor = livro.IdAutor,
+                    IdGenero = livro.IdGenero,
+                    Nome = livro.Nome,
+                };
+                await _livroService.Incluir(livroNOvo);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpDelete("ExcluirLivro/{id}")]
         public async Task<IActionResult> ExcluirLivro(int id)
         {
-            await _livroService.Excluir(id);
-            return Ok();
+            try
+            {
+                await _livroService.Excluir(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }

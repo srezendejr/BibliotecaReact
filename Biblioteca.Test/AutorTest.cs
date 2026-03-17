@@ -12,11 +12,13 @@ namespace Biblioteca.Test
     {
         private IAutorService _autorService;
         private Mock<IAutorRepository> _autorRepositoryMock;
+        private Mock<ILivroRepository> _livroRepositoryMock;
         [TestInitialize]
         public void Setup()
         {
             _autorRepositoryMock = new Mock<IAutorRepository>();
-            _autorService = new AutorService(_autorRepositoryMock.Object);
+            _livroRepositoryMock = new Mock<ILivroRepository>();
+            _autorService = new AutorService(_autorRepositoryMock.Object, _livroRepositoryMock.Object);
         }
 
         [TestMethod]

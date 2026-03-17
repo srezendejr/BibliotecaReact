@@ -16,11 +16,13 @@ namespace Biblioteca.Test
     {
         private IGeneroService _generoService;
         private Mock<IGeneroRepository> _generoRepositoryMock;
+        private Mock<ILivroRepository> _livroRepositoryMock;
         [TestInitialize]
         public void Setup()
         {
             _generoRepositoryMock = new Mock<IGeneroRepository>();
-            _generoService = new GeneroService(_generoRepositoryMock.Object);
+            _livroRepositoryMock = new Mock<ILivroRepository>();
+            _generoService = new GeneroService(_generoRepositoryMock.Object, _livroRepositoryMock.Object);
         }
 
         [TestMethod]

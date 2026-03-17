@@ -43,6 +43,11 @@ namespace Biblioteca.Service.Service
         {
             if (id <= 0)
                 throw new Exception("Informe o código do livro");
+            
+            bool bExiste = await Existe(id);
+            if (!bExiste)
+                throw new Exception("Livro não existe");
+
             return await livroRepository.Excluir(id);
         }
 
@@ -54,6 +59,21 @@ namespace Biblioteca.Service.Service
         public async Task<Livro> BuscaLivroPorId(int id)
         {
             return await livroRepository.BuscaLivroPorId(id);
+        }
+
+        public async Task<bool> Existe(int id)
+        {
+            return await livroRepository.Existe(id);
+        }
+
+        public async Task<IEnumerable<Livro>> LivrosPorAutor(int idAutor)
+        {
+            return await livroRepository.LivrosPorAutor(idAutor);
+        }
+
+        public async Task<IEnumerable<Livro>> LivrosPorGenero(int idGenero)
+        {
+            return await livroRepository.LivrosPorGenero(idGenero);
         }
     }
 }

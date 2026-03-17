@@ -13,10 +13,14 @@ namespace Biblioteca.Server.Controllers
     {
         private readonly ILogger<GeneroController> _loger;
         private readonly IGeneroService _generoService;
-        public GeneroController(IGeneroService generoService, ILogger<GeneroController> logger)
+        private readonly ILivroService _livroService;
+        public GeneroController(IGeneroService generoService, 
+            ILogger<GeneroController> logger,
+            ILivroService livroService)
         {
             _generoService = generoService;
             _loger = logger;
+            _livroService = livroService;
         }
 
         [HttpGet("ListaGeneros")]
@@ -36,20 +40,48 @@ namespace Biblioteca.Server.Controllers
         [HttpPost("SalvarGenero")]
         public async Task<IActionResult> SalvarGenero(DTO.GeneroDTO model)
         {
-            var generoViewModel = new ViewModel.Genero
+            try
             {
-                Nome = model.Nome,
-                Id = model.Id,
-            };
-            await _generoService.Incluir(generoViewModel);
-            return Ok();
+                var generoViewModel = new ViewModel.Genero
+                {
+                    Nome = model.Nome,
+                    Id = model.Id,
+                };
+                await _generoService.Incluir(generoViewModel);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("ExcluirGenero/{id}")]
         public async Task<IActionResult> ExcluirGenero(int id)
         {
-            await _generoService.Excluir(id);
-            return Ok();
+            try
+            {
+                await _generoService.Excluir(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/livrosPorGenero")]
+        public async Task<IActionResult> BuscarLivrosPorGenero(int id)
+        {
+            try
+            {
+                var livros = await _livroService.LivrosPorGenero(id);
+                return Ok(livros);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

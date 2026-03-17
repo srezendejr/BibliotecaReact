@@ -2,15 +2,18 @@
 using Biblioteca.Repository.Repository;
 using Biblioteca.Service.Interface;
 using Biblioteca.ViewModel;
+using System.Runtime.CompilerServices;
 
 namespace Biblioteca.Service.Service
 {
     public class GeneroService : IGeneroService
     {
         private readonly IGeneroRepository generoRepository;
-        public GeneroService(IGeneroRepository generoRepository)
+        private readonly ILivroRepository livroRepository;
+        public GeneroService(IGeneroRepository generoRepository, ILivroRepository livroRepository)
         {
             this.generoRepository = generoRepository;
+            this.livroRepository = livroRepository;
         }
 
         public async Task<bool> Alterar(Genero genero)
@@ -28,13 +31,19 @@ namespace Biblioteca.Service.Service
         {
             if (id <= 0)
                 throw new Exception("Informe um código de gênero válido");
+            bool bExiste = await Existe(id);
+            if (!bExiste)
+                throw new Exception("O gênero não existe");
+            var listaLivros = await livroRepository.LivrosPorGenero(id);
+            if (listaLivros.Count() > 0)
+                throw new Exception("Não é possível excluir o gênero. Ele possui livros cadastrados");
             return await generoRepository.Excluir(id);
 
         }
 
         public async Task<bool> Existe(int id)
         {
-         return await generoRepository.Existe(id);
+            return await generoRepository.Existe(id);
         }
 
         public async Task<bool> Incluir(Genero genero)

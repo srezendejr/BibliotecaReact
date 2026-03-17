@@ -7,9 +7,11 @@ namespace Biblioteca.Service.Service
     public class AutorService : IAutorService
     {
         private readonly IAutorRepository _autorRepository;
-        public AutorService(IAutorRepository autorRepository)
+        private readonly ILivroRepository _livroRepository;
+        public AutorService(IAutorRepository autorRepository, ILivroRepository livroRepository)
         {
             _autorRepository = autorRepository;
+            _livroRepository = livroRepository;
         }
 
         public async Task<bool> Alterar(Autor autor)
@@ -20,19 +22,28 @@ namespace Biblioteca.Service.Service
 
         public async Task<Autor> BuscaAutorPorId(int id)
         {
-            return await _autorRepository.BuscaAutorPorId(id); 
+            return await _autorRepository.BuscaAutorPorId(id);
         }
 
         public async Task<bool> Excluir(int id)
         {
             if (id <= 0)
                 throw new Exception("Informe um código de autor válido");
+
+            bool bExiste = await Existe(id);
+            if (!bExiste)
+                throw new Exception("Autor não existe");
+
+            var listaLivro = await _livroRepository.LivrosPorAutor(id);
+            if (listaLivro.Count() > 0)
+                throw new Exception("Não é possível excluir o autor. Ele já possui livros cadastrados");
+
             return await _autorRepository.Excluir(id);
         }
 
-        public Task<bool> Existe(int id)
+        public async Task<bool> Existe(int id)
         {
-            return _autorRepository.Existe(id);
+            return await _autorRepository.Existe(id);
         }
 
         public async Task<bool> Incluir(Autor autor)

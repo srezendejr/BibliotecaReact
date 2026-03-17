@@ -9,22 +9,33 @@ function AutorForm({ API_URL, atualizarAutores }) {
 
     const [modoEdicao, setModoEdicao] = useState(false);
 
-    const salvar = () => {
+    const salvar = async () => {
 
         const metodo = modoEdicao ? "PUT" : "POST";
+
         const url = modoEdicao
-            ? API_URL + "/v1/Autor/BuscaPorAutorPorId" + autor.id
+            ? API_URL + "/v1/Autor/AtualizarAutor/" + autor.id
             : API_URL + "/v1/Autor/SalvarAutor";
 
-        fetch(url, {
-            method: metodo,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(autor)
-        })
-            .then(() => {
-                atualizarAutores();
-                limpar();
+        try {
+
+            const response = await fetch(url, {
+                method: metodo,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(autor)
             });
+
+            if (!response.ok) {
+                const mensagem = await response.text();
+                throw new Error(mensagem);
+            }
+
+            atualizarAutores();
+            limpar();
+
+        } catch (erro) {
+            alert(erro.message);
+        }
     };
 
     const limpar = () => {

@@ -9,5 +9,8 @@ namespace Biblioteca.Service.Interface
         Task<bool> Incluir(Livro livro);
         Task<IEnumerable<Livro>> ListaLivros();
         Task<Livro> BuscaLivroPorId(int id);
+        Task<bool> Existe(int id);
+        Task<IEnumerable<Livro>> LivrosPorAutor(int idAutor);
+        Task<IEnumerable<Livro>> LivrosPorGenero(int idGenero);
     }
 }

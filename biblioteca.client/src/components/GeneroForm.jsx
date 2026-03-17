@@ -9,23 +9,33 @@ function GeneroForm({ API_URL, atualizarGeneros }) {
 
     const [modoEdicao, setModoEdicao] = useState(false);
 
-    const salvar = () => {
+    const salvar = async () => {
 
         const metodo = modoEdicao ? "PUT" : "POST";
 
         const url = modoEdicao
-            ? API_URL + "/v1/Genero/BuscaGeneroPorId/" + genero.id
+            ? API_URL + "/v1/Genero/AtualizarGenero/" + genero.id
             : API_URL + "/v1/Genero/SalvarGenero";
 
-        fetch(url, {
-            method: metodo,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(genero)
-        })
-            .then(() => {
-                atualizarGeneros();
-                limpar();
+        try {
+
+            const response = await fetch(url, {
+                method: metodo,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(genero)
             });
+
+            if (!response.ok) {
+                const mensagem = await response.text();
+                throw new Error(mensagem);
+            }
+
+            atualizarGeneros();
+            limpar();
+
+        } catch (erro) {
+            alert(erro.message);
+        }
     };
 
     const limpar = () => {
@@ -37,9 +47,7 @@ function GeneroForm({ API_URL, atualizarGeneros }) {
     return (
 
         <div style={{ marginBottom: 30 }}>
-
             <h3>{modoEdicao ? "Editar Gênero" : "Novo Gênero"}</h3>
-
             {modoEdicao && (
                 <>
                     ID <br />
@@ -47,7 +55,6 @@ function GeneroForm({ API_URL, atualizarGeneros }) {
                     <br />
                 </>
             )}
-
             Nome <br />
             <input
                 value={genero.nome}
@@ -55,13 +62,10 @@ function GeneroForm({ API_URL, atualizarGeneros }) {
                     setGenero({ ...genero, nome: e.target.value })
                 }
             />
-
             <br /><br />
-
             <button onClick={salvar}>
                 {modoEdicao ? "Salvar" : "Cadastrar"}
             </button>
-
             {modoEdicao && (
                 <button onClick={limpar}>
                     Cancelar

@@ -9,5 +9,8 @@ namespace Biblioteca.Repository.Interface
         Task<bool> Excluir(int id);
         Task<bool> Incluir(Livro livro);
         Task<IEnumerable<Livro>> ListarLivros();
+        Task<IEnumerable<Livro>> LivrosPorAutor(int idAutor);
+        Task<IEnumerable<Livro>> LivrosPorGenero(int idGenero);
+        Task<bool> Existe(int id);
     }
 }
